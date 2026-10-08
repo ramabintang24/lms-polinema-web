@@ -58,3 +58,5 @@ slc_page.html
 
 # Internal planning and roadmap documents
 docs/
+.vercel
+.env*
