@@ -9,6 +9,12 @@ __pycache__/
 venv/
 env/
 
+# Frontend
+node_modules/
+
+# Vercel
+.vercel/
+
 # Build artifacts
 *.egg-info/
 dist/

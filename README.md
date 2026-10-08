@@ -75,6 +75,19 @@ Settings can be overridden via environment variables or a `.env` file:
 
 See [`.env.example`](.env.example) for the full list.
 
+## Web app
+
+A local browser UI is included. From this folder:
+
+```bash
+cd frontend && npm install && npm run build && cd ..
+uv run lms-polinema-web
+```
+
+Open `http://127.0.0.1:8787`.
+
+The hosted deploy reads `LMS_POLINEMA_NIM` and `LMS_POLINEMA_PASSWORD` from the server environment instead of `~/.lms_polinema/credentials.json`. Set `LMS_POLINEMA_ACCESS_KEY` as well. Without that key, the public URL refuses to show courses.
+
 ## Known limitations
  
 - All data is retrieved by scraping HTML. The Moodle Web Services API is disabled on this instance.

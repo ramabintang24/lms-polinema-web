@@ -32,6 +32,10 @@ class CredentialStore:
 
     def load(self) -> tuple[str, str]:
         """Return stored (nim, password) or raise CredentialsNotFoundError."""
+        from_env = self._from_env()
+        if from_env:
+            return from_env
+
         if not self.exists():
             raise CredentialsNotFoundError(
                 f"No credentials found at {settings.credentials_file}. "
@@ -45,8 +49,18 @@ class CredentialStore:
             raise CredentialsNotFoundError(f"Failed to read credentials: {exc}") from exc
 
     def exists(self) -> bool:
-        """Return True if the credential file exists and contains valid JSON."""
+        """Return True if env credentials or a credential file are available."""
+        if self._from_env():
+            return True
         return bool(settings.credentials_file and settings.credentials_file.exists())
+
+    @staticmethod
+    def _from_env() -> tuple[str, str] | None:
+        nim = os.environ.get("LMS_POLINEMA_NIM", "").strip()
+        password = os.environ.get("LMS_POLINEMA_PASSWORD", "")
+        if nim and password:
+            return nim, password
+        return None
 
     def delete(self) -> None:
         """Remove stored credentials from disk."""

@@ -1,8 +1,17 @@
 """Configuration settings for LMS Polinema MCP server."""
 
+import os
 from pathlib import Path
 
+from pydantic import Field
 from pydantic_settings import BaseSettings
+
+
+def default_session_dir() -> Path:
+    """Use a writable temp dir on Vercel. The deployment filesystem is read-only."""
+    if os.environ.get("VERCEL"):
+        return Path("/tmp/lms_polinema")
+    return Path.home() / ".lms_polinema"
 
 
 class Settings(BaseSettings):
@@ -24,7 +33,7 @@ class Settings(BaseSettings):
     moodle_cookie_name: str = "MoodleSession"
 
     # Session and credential storage
-    session_dir: Path = Path.home() / ".lms_polinema"
+    session_dir: Path = Field(default_factory=default_session_dir)
     moodle_session_file: Path | None = None
     spada_session_file: Path | None = None
     credentials_file: Path | None = None
